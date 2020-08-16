@@ -1,0 +1,23 @@
+[
+    {
+        "id": "A1",
+        "title": "dance",
+        "inputData": {
+            "left": 1
+        }
+    },
+    {
+        "id": "A2",
+        "title": "walk",
+        "inputData": {
+            "right": 1
+        }
+    },
+    {
+        "id": "A3",
+        "title": "talk",
+        "inputData": {
+            "mouth": 1
+        }
+    }
+]
