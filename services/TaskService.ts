@@ -2,7 +2,7 @@ import { Request, Response } from "express"
 import User from "../models/User"
 import WorkspaceTask from "../models/WorkspaceTask"
 import { WorkspaceTaskType, WorkspaceTaskOperation, WorkspaceTaskState } from "../models/Enums";
-import { uuid } from 'uuidv4';
+import { v4 } from 'uuid';
 
 class TaskService {
     async getAllTasks(req: Request, res: Response) {
@@ -10,23 +10,23 @@ class TaskService {
         res.send(tasks)
     }
     async getAllTasksForMe(req: Request, res: Response) {
-        let invokerId = res.locals.jwtPayload.id;
+        let invokerId = res.locals.jwtPayload._id;
         let tasks = await WorkspaceTask.find({ user: invokerId })
         res.send(tasks)
     }
     async getTaskByIdForMe(req: Request, res: Response) {
-        let invokerId = res.locals.jwtPayload.id;
+        let invokerId = res.locals.jwtPayload._id;;
         let task = await WorkspaceTask.find({ id: req.params.id, user: invokerId })
         res.send(task)
     }
     async updateTaskById(req: Request, res: Response) {
-        let invokerId = res.locals.jwtPayload.id;
+        let invokerId = res.locals.jwtPayload._id;
         let task = await WorkspaceTask.findOne({ id: req.body.id })
         if (!task) {
-            return { "error": "Task not found" }
+            return res.send({ "error": "Task not found" })
         }
-        if (task.user.id !== invokerId) {
-            return { "error": "Not your task you can't modify" }
+        if (task.user._id !== invokerId) {
+            return res.send({ "error": "Not your task you can't modify" })
         }
 
         let obj: any = {}
@@ -55,10 +55,10 @@ class TaskService {
         res.send({ "message": "Task updated" })
     }
     async createTask(req: Request, res: Response) {
-        let invokerId = res.locals.jwtPayload.id;
+        let invokerId = res.locals.jwtPayload._id;;
         let invoker = await User.findOne({ id: invokerId })
         let task = await WorkspaceTask.insertMany([{
-            id: uuid(),
+            id: v4(),
             user: invoker,
             taskTemplateId: req.body.taskTemplateId,
             title: req.body.title,

@@ -20,7 +20,7 @@ class AuthorizationService {
     }
 
     async assignRole(req: Request, res: Response) {
-        let invokerId = res.locals.jwtPayload.id;
+        let invokerId = res.locals.jwtPayload._id;
         if (req.body.role === Roles.CAPTAIN) {
             let captain = await User.findOne({ "role": Roles.CAPTAIN })
             if (captain) {
@@ -67,7 +67,7 @@ class AuthorizationService {
             return res.status(401).send({ "error": "Auth error" })
         }
 
-        const token = jwt.sign({ id: user.id }, "=j)BapwJY^9q%pd", { expiresIn: "1h" });
+        const token = jwt.sign({ _id: user._id }, "=j)BapwJY^9q%pd", { expiresIn: "1h" });
 
         await User.updateOne({ id: user.id }, {
             $set: {
@@ -86,11 +86,12 @@ class AuthorizationService {
     }
 
     async logout(req: Request, res: Response) {
-        let user = await User.findOne({ id: req.body.id })
+        let _id = res.locals.jwtPayload._id;
+        let user = await User.findOne({ _id: _id })
         if (!user) {
             return res.status(404).send({ "error": "User not found" })
         }
-        await User.updateOne({ id: user.id }, {
+        await User.updateOne({ _id: _id }, {
             $set: {
                 lastLoginToken: "notexisting"
             }

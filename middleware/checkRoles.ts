@@ -4,7 +4,7 @@ import User from "../models/User";
 export const checkRole = (roles: Array<string>) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         //Get the user ID from previous midleware
-        const id = res.locals.jwtPayload.id;
+        const id = res.locals.jwtPayload._id;;
 
         //Get user role from the database
         let user = await User.findOne({id: id});

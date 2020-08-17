@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 import { TaskCommandState } from "./Enums";
 import { IUser } from "./User";
 import { IWorkspaceTask } from "./WorkspaceTask";
@@ -19,10 +19,10 @@ const TaskCommandSchema = new mongoose.Schema({
     state: { type: String },
     createdAt: { type: Date },
     updatedAt: { type: Date },
-    from: { type: String },
-    to: { type: String },
+    from: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    to: [{ type: Schema.Types.ObjectId, ref: 'User' }],
     type: { type: String },
-    task: { type: String }
+    task: [{ type: Schema.Types.ObjectId, ref: 'WorkspaceTask' }]
 });
 
 const TaskCommand = mongoose.model<ITaskCommand>("TaskCommand", TaskCommandSchema);
