@@ -1,14 +1,22 @@
 import { Context } from "../Init";
 import { Request, Response } from "express"
+import { checkJwt } from "../middleware/checkJWT";
+import TaskService from "../services/TaskService";
 
 
 class TaskController {
     async registerRoutes(app: any, ctx: Context) {
-        app.get("/task", async(req: Request, res: Response) => {
+        app.get("/task/:id", [checkJwt], async (req: Request, res: Response) => {
+            await TaskService.getTaskByIdForMe(req, res)
         })
-        app.post("/task", async(req: Request, res: Response) => {
+        app.get("/task", [checkJwt], async (req: Request, res: Response) => {
+            await TaskService.getAllTasksForMe(req, res)
         })
-        app.put("/task", async(req: Request, res: Response) => {
+        app.post("/task", [checkJwt], async (req: Request, res: Response) => {
+            await TaskService.createTask(req, res)
+        })
+        app.put("/task", [checkJwt], async (req: Request, res: Response) => {
+            await TaskService.updateTaskById(req, res)
         })
     }
 }

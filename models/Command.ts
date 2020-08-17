@@ -6,8 +6,8 @@ import { IWorkspaceTask } from "./WorkspaceTask";
 export interface ITaskCommand extends mongoose.Document {
     id: String;
     state: TaskCommandState;
-    createdAt: String;
-    updatedAt: String;
+    createdAt: Date;
+    updatedAt: Date;
     from: IUser;
     to: IUser;
     type: String;
@@ -17,8 +17,8 @@ export interface ITaskCommand extends mongoose.Document {
 const TaskCommandSchema = new mongoose.Schema({
     id: { type: String },
     state: { type: String },
-    createdAt: { type: String },
-    updatedAt: { type: String },
+    createdAt: { type: Date },
+    updatedAt: { type: Date },
     from: { type: String },
     to: { type: String },
     type: { type: String },

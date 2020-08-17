@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 import { WorkspaceTaskOperation, WorkspaceTaskType, WorkspaceTaskState } from "./Enums";
+import { IUser } from "../models/User";
+import User from "./User";
 
 export interface IWorkspaceTask extends mongoose.Document {
     id: String;
@@ -8,6 +10,7 @@ export interface IWorkspaceTask extends mongoose.Document {
     type: WorkspaceTaskType;
     operation: WorkspaceTaskOperation;
     outputData: any;
+    user: IUser,
     state: WorkspaceTaskState;
 };
 
@@ -18,7 +21,8 @@ export const WorkspaceTaskSchema = new mongoose.Schema({
     type: { type: String },
     operation: { type: String },
     outputData: { type: String },
+    user: { type: User },
     state : { type: String }
 });
-const WorkspaceTask = mongoose.model<IWorkspaceTask>("Device", WorkspaceTaskSchema);
+const WorkspaceTask = mongoose.model<IWorkspaceTask>("WorkspaceTask", WorkspaceTaskSchema);
 export default WorkspaceTask;
