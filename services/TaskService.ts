@@ -21,11 +21,11 @@ class TaskService {
     }
     async updateTaskById(req: Request, res: Response) {
         let invokerId = res.locals.jwtPayload._id;
-        let task = await WorkspaceTask.findOne({ id: req.body.id })
+        let task = await WorkspaceTask.findOne({ id: req.body.id }).populate("user").exec()
         if (!task) {
             return res.send({ "error": "Task not found" })
         }
-        if (task.user._id !== invokerId) {
+        if (task.user && task.user._id && task.user._id.toString() !== invokerId) {
             return res.send({ "error": "Not your task you can't modify" })
         }
 
@@ -37,15 +37,24 @@ class TaskService {
             obj.title = req.body.title
         }
         if (req.body.type) {
+            if (!WorkspaceTaskType[req.body.type]) {
+                return res.send({ "error": "Incorrect type" })
+            }
             obj.type = WorkspaceTaskType[req.body.type]
         }
         if (req.body.operation) {
+            if (!WorkspaceTaskOperation[req.body.operation]) {
+                return res.send({ "error": "Incorrect task operation" })
+            }
             obj.operation = WorkspaceTaskOperation[req.body.operation]
         }
         if (req.body.outputData) {
             obj.outputData = req.body.outputData || {}
         }
         if (req.body.state) {
+            if (!WorkspaceTaskState[req.body.state]) {
+                return res.send({ "error": "Incorrect task state" })
+            }
             obj.state = WorkspaceTaskState[req.body.state]
         }
 
@@ -56,7 +65,7 @@ class TaskService {
     }
     async createTask(req: Request, res: Response) {
         let invokerId = res.locals.jwtPayload._id;;
-        let invoker = await User.findOne({ id: invokerId })
+        let invoker = await User.findOne({ _id: invokerId })
         let task = await WorkspaceTask.insertMany([{
             id: v4(),
             user: invoker,

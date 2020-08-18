@@ -48,8 +48,18 @@ export enum WorkspaceTaskOperation {
 }
 
 export enum WorkspaceTaskState {
-    IDLE  = "IDLE",
-    IN_PROGRESS  = "IN-PROGRESS",
-    COMPLETE  = "COMPLETE",
+    IDLE = "IDLE",
+    IN_PROGRESS = "IN-PROGRESS",
+    COMPLETE = "COMPLETE",
     CANCELLED = "CANCELLED"
+}
+export enum TaskCommandType {
+    TASK_CREATE = "TASK_CREATE",
+    TASK_CANCEL = "TASK_CANCEL",
+    TASK_COMPLETE = "TASK_COMPLETE"
+}
+export enum TaskCommandTaskType {
+    LOG = "LOG",
+    CHECKLIST = "CHECKLIST",
+    PERMIT = "PERMIT"
 }

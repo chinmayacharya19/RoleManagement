@@ -20,7 +20,7 @@ export const WorkspaceTaskSchema = new mongoose.Schema({
     type: { type: String },
     operation: { type: String },
     outputData: { type: Object },
-    user: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    user: { type: Schema.Types.ObjectId, ref: 'User' },
     state: { type: String }
 });
 const WorkspaceTask = mongoose.model<IWorkspaceTask>("WorkspaceTask", WorkspaceTaskSchema);

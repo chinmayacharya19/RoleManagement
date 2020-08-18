@@ -39,7 +39,7 @@ class AuthorizationService {
                 return res.status(400).send({ "error": "chiefOfficer already exists" })
             }
         }
-        let invoker = await User.findOne({ id: invokerId })
+        let invoker = await User.findOne({ _id: invokerId })
         let user = await User.findOne({ id: req.body.id })
         // less is more powerful
         if (RolesPower[invoker.role] > +RolesPower[req.body.role]) {
